@@ -1,11 +1,61 @@
+
+
 <html>
 <head>
     <title>RPG</title>
     <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
-    <link href="/css/my.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript"  src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<!--    <script type="text/javascript"  src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js">-->
+<!--    </script>-->
+    <script>
+        $(document).ready(function(){
+            $('#myTable').DataTable();
+        });
+    </script>
+    <script>$.ajax({
+        type: "GET",
+        url: "/rest/players",
+        dataType: "json",
+        success: function(response) {
+            table = document.getElementById('myTable');
+            if (response.length) {
+                for (i = 0, l = response.length; i < l; i++) {
+                    var row = table.insertRow();
+                    row.insertCell().appendChild(document.createTextNode(response[i].id));
+                    row.insertCell().appendChild(document.createTextNode(response[i].name));
+                    row.insertCell().appendChild(document.createTextNode(response[i].title));
+                    row.insertCell().append(response[i].race);
+                    row.insertCell().append(response[i].profession);
+                    row.insertCell().append(response[i].level);
+                    row.insertCell().append(new Date(response[i].birthday).toLocaleDateString());
+                    row.insertCell().append(response[i].banned);
+
+                }
+            }
+        }
+    });</script>
+<!--    <script>-->
+<!--        $.get("/rest/players/count", function( data ) {-->
+
+<!--        });-->
+<!--    </script>-->
 </head>
 <body>
 <h1>RPG admin panel</h1>
-
+<h2>Accounts list:</h2>
+<table id="myTable" border="1" class="display">
+   <thead>
+       <th>#</th>
+       <th>Name</th>
+       <th>Title</th>
+       <th>Race</th>
+       <th>Profession</th>
+       <th>Level</th>
+       <th>Birthday</th>
+       <th>Banned</th>
+   </thead>
+</table>
 </body>
 </html>
