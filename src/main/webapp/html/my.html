@@ -4,16 +4,8 @@
 <head>
     <title>RPG</title>
     <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
-    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="/css/my.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript"  src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<!--    <script type="text/javascript"  src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js">-->
-<!--    </script>-->
-    <script>
-        $(document).ready(function(){
-            $('#myTable').DataTable();
-        });
-    </script>
     <script>$.ajax({
         type: "GET",
         url: "/rest/players",
@@ -23,9 +15,9 @@
             if (response.length) {
                 for (i = 0, l = response.length; i < l; i++) {
                     var row = table.insertRow();
-                    row.insertCell().appendChild(document.createTextNode(response[i].id));
-                    row.insertCell().appendChild(document.createTextNode(response[i].name));
-                    row.insertCell().appendChild(document.createTextNode(response[i].title));
+                    row.insertCell().append(response[i].id);
+                    row.insertCell().append(response[i].name);
+                    row.insertCell().append(response[i].title);
                     row.insertCell().append(response[i].race);
                     row.insertCell().append(response[i].profession);
                     row.insertCell().append(response[i].level);
@@ -36,15 +28,30 @@
             }
         }
     });</script>
-<!--    <script>-->
-<!--        $.get("/rest/players/count", function( data ) {-->
 
-<!--        });-->
-<!--    </script>-->
+    <script>
+        $.get("/rest/players/count", function (data) {
+            return data;
+        });
+    </script>
+
+
+
 </head>
 <body>
 <h1>RPG admin panel</h1>
 <h2>Accounts list:</h2>
+
+<form action="#">
+    <label for="dropdown">Count per page: </label>
+    <select name="menu" id="dropdown">
+        <option value="3">3</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+    </select>
+    <input type="submit" value="Submit" />
+</form>
 <table id="myTable" border="1" class="display">
    <thead>
        <th>#</th>
@@ -57,5 +64,15 @@
        <th>Banned</th>
    </thead>
 </table>
+<div class="pagination">
+    <a href="#"> < </a>
+    <a class="active" href="#">1</a>
+    <a href="#">2</a>
+    <a href="#">3</a>
+    <a href="#">4</a>
+    <a href="#">5</a>
+    <a href="#">6</a>
+    <a href="#"> > </a>
+</div>
 </body>
 </html>
