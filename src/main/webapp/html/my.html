@@ -6,35 +6,57 @@
     <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
     <link href="/css/my.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script>$.ajax({
-        type: "GET",
-        url: "/rest/players",
-        dataType: "json",
-        success: function(response) {
-            table = document.getElementById('myTable');
-            if (response.length) {
-                for (i = 0, l = response.length; i < l; i++) {
-                    var row = table.insertRow();
-                    row.insertCell().append(response[i].id);
-                    row.insertCell().append(response[i].name);
-                    row.insertCell().append(response[i].title);
-                    row.insertCell().append(response[i].race);
-                    row.insertCell().append(response[i].profession);
-                    row.insertCell().append(response[i].level);
-                    row.insertCell().append(new Date(response[i].birthday).toLocaleDateString());
-                    row.insertCell().append(response[i].banned);
-
-                }
-            }
-        }
-    });</script>
 
     <script>
-        $.get("/rest/players/count", function (data) {
-            return data;
-        });
-    </script>
 
+        function getPlayers(select) {
+            $.ajax({
+                type: "GET",
+                url: "/rest/players/?pageNumber=0&pageSize=" + select,
+                dataType: "json",
+                success: function (response) {
+                    $("#myTable tr").remove();
+                    table = document.getElementById('myTable');
+                    if (response.length) {
+                        for (i = 0, l = response.length; i < l; i++) {
+                            var row = table.insertRow();
+                            row.insertCell().append(response[i].id);
+                            row.insertCell().append(response[i].name);
+                            row.insertCell().append(response[i].title);
+                            row.insertCell().append(response[i].race);
+                            row.insertCell().append(response[i].profession);
+                            row.insertCell().append(response[i].level);
+                            row.insertCell().append(new Date(response[i].birthday).toLocaleDateString());
+                            row.insertCell().append(response[i].banned);
+                        }
+                    }
+                }
+            });
+        }
+
+        function calculatePageCount() {
+            var selectVal = getSelectVal();
+            var totalCount = getTotalCount();
+            var pageCount = totalCount / selectVal;
+            return pageCount;
+        }
+
+        getPlayers(3);
+
+
+    function getTotalCount() {
+        let value = 1;
+        $.ajax({
+            url: "/rest/players/count",
+            async: false,
+            success: function (result) {
+                value = result;
+            }
+        });
+        return parseInt(value);
+    }
+
+    </script>
 
 
 </head>
@@ -44,13 +66,19 @@
 
 <form action="#">
     <label for="dropdown">Count per page: </label>
-    <select name="menu" id="dropdown">
-        <option value="3">3</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
+    <select name="menu" id="dropdown" onchange="getSelectValue();">
+        <option value=3>3</option>
+        <option value=10>10</option>
+        <option value=15>15</option>
+        <option value=20>20</option>
     </select>
-    <input type="submit" value="Submit" />
+<!--    <input type="submit" value="Submit" />-->
+    <script>
+        function getSelectValue() {
+            var selectedValue = document.getElementById('dropdown').value;
+            getPlayers(selectedValue);
+        }
+    </script>
 </form>
 <table id="myTable" border="1" class="display">
    <thead>
