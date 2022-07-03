@@ -30,7 +30,7 @@
                             tr.append('<td>'+ new Date(response[i].birthday).toLocaleDateString() + '</td>');
                             tr.append('<td>'+ response[i].banned + '</td>');
                             tr.append('<td>'+ '<img src="/img/edit.png">' + '</td>');
-                            tr.append('<td>'+ '<img data-value='+ response[i].id + 'onclick=deleteAccount(this) src="/img/delete.png">' + '</td>');
+                            tr.append('<td>'+ '<img data-value='+ response[i].id + '  onclick=deleteAccount(this) src="/img/delete.png">' + '</td>');
                             tr.append("</tr>");
                             table.append(tr);
                         }
