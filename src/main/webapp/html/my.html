@@ -15,24 +15,30 @@
                 url: "/rest/players/?pageNumber=0&pageSize=" + select,
                 dataType: "json",
                 success: function (response) {
-                    $("#myTable tr").remove();
+                    $("#myTable td").remove();
                     table = document.getElementById('myTable');
                     if (response.length) {
                         for (i = 0, l = response.length; i < l; i++) {
-                            var row = table.insertRow();
-                            row.insertCell().append(response[i].id);
-                            row.insertCell().append(response[i].name);
-                            row.insertCell().append(response[i].title);
-                            row.insertCell().append(response[i].race);
-                            row.insertCell().append(response[i].profession);
-                            row.insertCell().append(response[i].level);
-                            row.insertCell().append(new Date(response[i].birthday).toLocaleDateString());
-                            row.insertCell().append(response[i].banned);
+                            const table = $('#myTable');
+                            const tr = $('<tr>');
+                            tr.append('<td>'+ response[i].id + '</td>');
+                            tr.append('<td>'+ response[i].name + '</td>');
+                            tr.append('<td>'+ response[i].title + '</td>');
+                            tr.append('<td>'+ response[i].race + '</td>');
+                            tr.append('<td>'+ response[i].profession + '</td>');
+                            tr.append('<td>'+ response[i].level + '</td>');
+                            tr.append('<td>'+ new Date(response[i].birthday).toLocaleDateString() + '</td>');
+                            tr.append('<td>'+ response[i].banned + '</td>');
+                            tr.append('<td>'+ '<img src="/img/edit.png">' + '</td>');
+                            tr.append('<td>'+ '<img data-value='+ response[i].id + 'onclick=deleteAccount(this) src="/img/delete.png">' + '</td>');
+                            tr.append("</tr>");
+                            table.append(tr);
                         }
                     }
                 }
             });
         }
+        getPlayers(3);
 
         function calculatePageCount() {
             var selectVal = getSelectVal();
@@ -40,8 +46,6 @@
             var pageCount = totalCount / selectVal;
             return pageCount;
         }
-
-        getPlayers(3);
 
 
     function getTotalCount() {
@@ -56,6 +60,21 @@
         return parseInt(value);
     }
 
+        function deleteAccount(btn) {
+            $.ajax({
+                url: "/rest/players/{id}",
+                type: 'DELETE',
+                success: function(result) {
+                    for (let i = 0; i < result.length; i++) {
+                        if (result[i].id === btn.id) {
+                            result[i].delete();
+                        }
+                    }
+                }
+            });
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
     </script>
 
 
@@ -90,6 +109,8 @@
        <th>Level</th>
        <th>Birthday</th>
        <th>Banned</th>
+       <th>Edit</th>
+       <th>Delete</th>
    </thead>
 </table>
 <div class="pagination">
@@ -102,5 +123,48 @@
     <a href="#">6</a>
     <a href="#"> > </a>
 </div>
+<h8>.</h8>
+<hr>
+<h2>Create new account:</h2>
+<form>
+    <label for="name">name:</label><br>
+    <input type="text" id="name" name="name"><br>
+    <label for="title">title:</label><br>
+    <input type="text" id="title" name="title"><br>
+    <label for="race">race:</label><br>
+    <input list="race">
+    <datalist id="race">
+        <option value="HUMAN">
+        <option value="DWARF">
+        <option value="ELF">
+        <option value="GIANT">
+        <option value="ORC">
+        <option value="TROLL">
+        <option value="HOBBIT">
+    </datalist><br><br>
+    <label for="profession">profession:</label><br>
+    <input list="profession">
+    <datalist id="profession">
+        <option value="WARRIOR">
+        <option value="ROGUE">
+        <option value="SORCERER">
+        <option value="CLERIC">
+        <option value="PALADIN">
+        <option value="NAZGUL">
+        <option value="WARLOCK">
+        <option value="DRUID">
+    </datalist><br><br>
+    <label for="level">level (between 0 and 100):</label><br>
+    <input type="number" id="level" name="level"  min="0" max="100"><br>
+    <label for="date">Birthday :</label>
+    <input type="date" id="date" name="date"><br><br>
+    <input list="banned">
+    <datalist id="banned">
+        <option value="true">
+        <option value="false">
+    </datalist><br>
+
+    <input type="submit" value="Submit">
+</form>
 </body>
 </html>
