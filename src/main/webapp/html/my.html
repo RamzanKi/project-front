@@ -294,29 +294,26 @@
     <input type="text" id="title" name="title" required size="1" maxlength="30"><br>
 
     <label for="race">race:</label><br>
-    <input list="race">
-    <datalist id="race">
-        <option value="HUMAN">
-        <option value="DWARF">
-        <option value="ELF">
-        <option value="GIANT">
-        <option value="ORC">
-        <option value="TROLL">
-        <option value="HOBBIT">
-    </datalist><br><br>
+    <select id="race" name="race">
+        <option value="HUMAN">HUMAN</option>
+        <option value="DWARF">DWARF</option>
+        <option value="ELF">ELF</option>
+        <option value="GIANT">GIANT</option>
+        <option value="ORC">ORC</option>
+        <option value="TROLL">TROLL</option>
+        <option value="HOBBIT">HOBBIT</option>
+    </select><br><br>
 
     <label for="profession">profession:</label><br>
-    <input list="profession">
-    <datalist id="profession">
-        <option value="WARRIOR">
-        <option value="ROGUE">
-        <option value="SORCERER">
-        <option value="CLERIC">
-        <option value="PALADIN">
-        <option value="NAZGUL">
-        <option value="WARLOCK">
-        <option value="DRUID">
-    </datalist><br><br>
+    <select id="profession" name="profession">
+        <option value="WARRIOR">WARRIOR</option>
+        <option value="ROGUE">ROGUE</option>
+        <option value="SORCERER">SORCERER</option>
+        <option value="CLERIC">CLERIC</option>
+        <option value="PALADIN">PALADIN</option>
+        <option value="NAZGUL">NAZGUL</option>
+        <option value="WARLOCK">WARLOCK</option>
+    </select><br><br>
 
     <label for="level">level (between 0 and 100):</label><br>
     <input type="number" id="level" name="level"  min="0" max="100"><br>
@@ -324,11 +321,10 @@
     <label for="birthday">Birthday :</label>
     <input type="date" id="birthday" name="birthday"><br><br>
 
-    <input list="banned">
-    <datalist id="banned">
-        <option value="true">
-        <option value="false">
-    </datalist><br>
+    <select id="banned" name="banned">
+        <option value="true">true</option>
+        <option value="false">false</option>
+    </select><br>
 
 
     <span>
